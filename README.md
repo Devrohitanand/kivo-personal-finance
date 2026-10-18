@@ -1,74 +1,89 @@
-# KIVO — Personal Finance Tracker
+# KIVO
 
-**Apna hisaab, ekdum clear.**
+### Apna hisaab, ekdum clear.
 
-KIVO is a personal lending and repayment tracker designed to help users manage money lent to others, track repayments, and keep their financial records organized in one place.
+**A personal lending and repayment tracker built to make everyday money management simpler, clearer, and more reliable.**
 
-## Overview
+> 🚧 **Project Status: Under Active Development**
+>
+> KIVO is currently being built. Features, database integration, testing, and documentation are being developed and refined as the project progresses.
 
-KIVO aims to make everyday money tracking simple, clear, and reliable. It focuses on recording transactions, monitoring outstanding balances, and maintaining a consistent history of lending and repayments.
+---
+
+## About KIVO
+
+Keeping track of money lent to friends and family can quickly become confusing. KIVO aims to solve this by bringing lending records, repayments, and outstanding balances into one organized place.
+
+Designed with simplicity and clarity in mind, KIVO focuses on helping users understand who owes them money, how much has been repaid, and what remains outstanding.
 
 ## Planned Features
 
-- Manage people and their lending records
-- Record money lent and repayments received
-- Track outstanding balances
-- View transaction activity and financial summaries
-- Generate reports and export financial records
-- Secure authentication and user-specific data
-- Maintain transaction history after logout and login
+- **People Management** — Keep lending records organized by person.
+- **Lending Records** — Record money lent with relevant transaction details.
+- **Repayment Tracking** — Track partial and full repayments.
+- **Outstanding Balances** — Keep track of remaining amounts.
+- **Activity History** — Review past transactions and repayments.
+- **Financial Reports** — View summaries and export records.
+- **Secure Accounts** — Keep each user's financial records private.
+
+*Features are planned and may change as development progresses.*
 
 ## Tech Stack
 
-The project source is organized around the following technologies:
+| Layer | Technologies |
+|---|---|
+| Frontend | React, TypeScript, Vite |
+| Backend | Node.js, Express, TypeScript |
+| Database | PostgreSQL |
+| ORM | Prisma |
+| Testing | Vitest, browser-based E2E tests |
+| Infrastructure | Docker Compose |
 
-- **Frontend:** React, TypeScript, Vite
-- **Backend:** Node.js, Express, TypeScript
-- **Database:** PostgreSQL
-- **ORM:** Prisma
-- **Testing:** Vitest and browser-based end-to-end tests
-- **Infrastructure:** Docker Compose
+## Design Philosophy
 
-## Design
+KIVO follows a **Midnight & Mint** design direction, combining forest green, mint, and off-white with a clean, minimal interface.
 
-KIVO uses a **Midnight & Mint** visual theme, combining forest green, mint, and off-white colors for a clean, minimal interface.
-
-The interface is designed around clarity, readable financial information, and simple navigation.
+The goal is simple: make financial information easy to understand without unnecessary visual clutter.
 
 ## Project Structure
 
 ```text
 kivo-personal-finance/
-├── e2e/
-├── server/
-│   ├── prisma/
-│   └── src/
-├── web/
-│   └── src/
-├── docs/
+├── e2e/          # End-to-end tests
+├── server/       # Backend and database
+├── web/          # Frontend application
+├── docs/         # Project documentation
 ├── docker-compose.yml
 ├── package.json
 └── README.md
 ```
 
-## Development Status
-
-KIVO is currently under development. Features, configuration, testing, and setup instructions will be updated as implementation progresses.
+*The structure will evolve as development continues.*
 
 ## Getting Started
 
-Local setup instructions will be added after the project configuration, dependencies, and database migrations have been verified.
+Local installation and setup instructions will be added once the development configuration is finalized and verified.
+
+## Development Roadmap
+
+- [ ] Complete project and database setup
+- [ ] Implement authentication and session management
+- [ ] Build lending and repayment workflows
+- [ ] Connect the frontend to the backend
+- [ ] Verify financial calculations and data isolation
+- [ ] Complete automated and end-to-end testing
+- [ ] Document setup and deployment
 
 ## Security
 
-- Never commit real environment files, credentials, or API secrets.
-- Use `.env.example` as a template for required environment variables.
-- Keep personal financial records private and protected.
+- Never commit real credentials, API secrets, or production environment files.
+- Configure environment variables locally using the provided example template.
+- Protect financial records through authentication and user-level access controls.
 
 ## License
 
-No license has been specified yet. All rights reserved unless a license is added to this repository.
+No license has been specified yet.
 
 ---
 
-Built with care as a full-stack personal finance project.
+**KIVO is a work in progress.** The goal is to build a practical, maintainable, and reliable personal finance tool, one feature at a time.
