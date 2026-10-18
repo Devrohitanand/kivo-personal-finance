@@ -1,0 +1,42 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: kivo-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: kivo
+      POSTGRES_PASSWORD: kivo
+      POSTGRES_DB: kivo
+    ports:
+      - '5432:5432'
+    volumes:
+      - kivo-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kivo -d kivo']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    container_name: kivo-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      DATABASE_URL: postgresql://kivo:kivo@db:5432/kivo?schema=public
+      CORS_ORIGIN: http://localhost:5173
+      COOKIE_SECURE: 'false'
+      SESSION_SECRET: change-me-in-production-000000000000
+      CSRF_SECRET: change-me-in-production-000000000000
+    ports:
+      - '4000:4000'
+    command: sh -c "npx prisma migrate deploy && node dist/index.js"
+
+volumes:
+  kivo-db-data:

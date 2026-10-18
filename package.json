@@ -1,0 +1,31 @@
+{
+  "name": "kivo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "KIVO - personal lending, borrowing and settlement ledger (Apna hisaab, ekdum clear).",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "db:up": "docker compose up -d db",
+    "db:migrate": "npm run -w server db:migrate",
+    "db:seed": "npm run -w server db:seed",
+    "dev": "concurrently -n server,web -c green,cyan \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run -w server dev",
+    "dev:web": "npm run -w web dev",
+    "build": "npm run -w server build && npm run -w web build",
+    "typecheck": "npm run -w server typecheck && npm run -w web typecheck",
+    "lint": "npm run -w server lint && npm run -w web lint",
+    "test": "npm run -w server test && npm run -w web test",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "start": "node server/dist/src/index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "playwright": "^1.64.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
