@@ -66,6 +66,11 @@ Local installation and setup instructions will be added once the development con
 
 ## Development Roadmap
 
+- [x] Create initial project structure and configuration
+- [x] Add Prisma schema, initial SQL migration, and migration lock
+- [x] Add database seed file
+- [x] Add initial backend utility modules
+- [x] Begin backend environment configuration and middleware
 - [ ] Complete project and database setup
 - [ ] Implement authentication and session management
 - [ ] Build lending and repayment workflows
