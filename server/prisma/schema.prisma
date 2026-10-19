@@ -1,0 +1,120 @@
+// KIVO data model.
+//
+// Money convention: every monetary column is an integer count of paise
+// (1 rupee = 100 paise). Floating point is never used for money.
+//
+// Ledger convention:
+//   LENT     - the user gave money to a person  -> contributes to receivable
+//   BORROWED - the user received money          -> contributes to payable
+//   outstanding(entry) = principalPaise - sum(repayments)
+//   net balance        = receivable - payable
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Direction {
+  LENT
+  BORROWED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  people     Person[]
+  entries    Entry[]
+  repayments Repayment[]
+  auditLogs  AuditLog[]
+}
+
+model Person {
+  id         String    @id @default(cuid())
+  userId     String
+  name       String
+  phone      String?
+  note       String?
+  archivedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries Entry[]
+
+  @@index([userId, name])
+  @@index([userId, archivedAt])
+}
+
+model Entry {
+  id             String    @id @default(cuid())
+  userId         String
+  personId       String
+  direction      Direction
+  principalPaise Int
+  note           String?
+  occurredAt     DateTime
+  dueDate        DateTime?
+  idempotencyKey String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  person     Person      @relation(fields: [personId], references: [id], onDelete: Cascade)
+  repayments Repayment[]
+
+  @@unique([userId, idempotencyKey])
+  @@index([userId, occurredAt])
+  @@index([userId, direction])
+  @@index([personId])
+}
+
+model Repayment {
+  id             String    @id @default(cuid())
+  userId         String
+  entryId        String
+  amountPaise    Int
+  note           String?
+  occurredAt     DateTime
+  idempotencyKey String?
+  createdAt      DateTime  @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entry Entry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, idempotencyKey])
+  @@index([entryId])
+  @@index([userId, occurredAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  meta      Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+// Session store table owned by connect-pg-simple. Declared here so the table is
+// created by migrations rather than at runtime.
+model Session {
+  sid    String   @id
+  sess   Json
+  expire DateTime
+
+  @@index([expire])
+}
